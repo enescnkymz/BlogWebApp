@@ -7,32 +7,38 @@ Kullanıcıların blog yazılarını görüntüleyebildiği, yorum yapabildiği 
 
 ## 🚀 Özellikler
 
-- 🧍‍♂️ Kullanıcı **kayıt (Register)** ve **giriş (Login)** sistemi  
+- 🧍‍♂️ Kullanıcı Register ve Login sistemi  
 - 🔐 Kimlik Doğrulama (Authentication)
-- 📝 **Blog gönderileri** listeleme ve detay sayfası  
-- 💬 **Yorum ekleme** özelliği  
-- 📧 **AJAX ile Bültene abone olma**  
-- ⚡ **Bootstrap 5.3** tasarımı  
-- 💾 **Entity Framework Core** ile veritabanı işlemleri  
+- 📝 Blog gönderileri listeleme ve detay sayfası  
+- 💬 Yorum ekleme   
+- 📧 AJAX ile Bültene abone olma  
+- ⚡ Bootstrap 5.3 sayfa tasarımı  
+- 💾 Entity Framework Core ile veritabanı işlemleri  
 
 ---
 
 ## 🛠️ Kullanılan Teknolojiler
 
-| **ASP.NET Core 8.0 (MVC)** 
-| **Entity Framework Core** 
-| **Bootstrap 5.3** 
-| **AJAX / jQuery** 
-| **HTML5 & CSS3** 
-| **MS SQL Server** 
+- **ASP.NET Core 8.0 (MVC)**
+- **Entity Framework Core** 
+- **Bootstrap 5.3** 
+- **AJAX / jQuery** 
+- **HTML5 & CSS3** 
+- **MS SQL Server** 
 
 ---
 
 ## 📸 Ekran Görüntüleri
-
+**Ana Sayfa**
 > ![Ana Sayfa](images/mainpage.jpg)
+
+**Blog Detayları**
 > ![Blog Detay](images/blogdetails.png)
+
+**Giriş Sayfası**
 > ![Giriş Sayfası](images/login.png)
+
+**İletişim Sayfası**
 > ![İletişim Sayfası](images/contact.png)
 
 ---
