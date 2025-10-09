@@ -1,0 +1,86 @@
+﻿@model EntityLayer.Concrete.Writer
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-4">Kayıt Ol</h3>
+
+
+
+                @using (Html.BeginForm("index", "Register", FormMethod.Post))
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Kullanıcı Adı</label>
+                         
+                        @Html.TextBoxFor(x => x.WriterName, new { @class= "form-control"} )
+                        @Html.ValidationMessageFor(x => x.WriterName,"", new {@class="text-danger"} )
+
+                        @*<input type="text" name="WriterName" class="form-control" placeholder="Kullanıcı adınız" required />*@
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">E-Posta</label>
+
+                        @Html.TextBoxFor(x => x.WriterMail , new {@class="form-control"} )
+                        @Html.ValidationMessageFor(x => x.WriterMail, "", new { @class = "text-danger" })
+
+                        @*<input type="email" name="WriterMail" class="form-control" placeholder="E-Posta adresiniz" required />*@
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Şifre</label>
+
+                        @Html.TextBoxFor(x => x.WriterPassword , new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.WriterPassword, "", new { @class = "text-danger" })
+
+                        @*<input type="password" name="WriterPassword" class="form-control" placeholder="Şifreniz" required />*@
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kullanıcı Fotoğrafı</label>
+
+                        @Html.TextBoxFor(x => x.WriterImage , new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.WriterImage, "", new { @class = "text-danger" })
+
+                        @*<input type="text" name="WriterImage" class="form-control" placeholder="Dosya yolu" required />*@
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="checkbox" id="terms" class="form-check-input" />
+                        <span><a href="" id="showTerms">Şartları</a> okudum ve kabul ediyorum</span>
+                    </div>
+
+                    <script>
+                        $('#showTerms').click(function (e) {
+                            e.preventDefault();
+                            swal("Şartlarımız","Kullanıcılar paylaştıkları yorum ve içeriklerden kendileri sorumludur. hukuka aykırı içerikler kaldırılabilir.Telif hakkı size ait olmayan metin, görsel veya medyayı paylaşmayın; alıntılarda kaynak belirtin.Kişisel veriler gizlilik politikası kapsamında işlenir; spam ve reklam amaçlı içeriklere izin verilmez.");
+                        });
+                    </script>
+
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                    </div>
+                }
+
+
+
+
+
+                <p class="text-center mt-3 mb-0">
+                    Zaten hesabın var mı? <a href="/Login/Index">Giriş Yap</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

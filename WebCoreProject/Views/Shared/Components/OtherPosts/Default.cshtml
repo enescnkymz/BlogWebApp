@@ -1,0 +1,21 @@
+﻿@using EntityLayer.Concrete
+@model IEnumerable<Description>
+
+
+
+<div class="card mb-4 bg-black">
+    <div class="card-header text-warning">Son Bloglar</div>
+    <div class="card-body">
+        @foreach (var item in Model.Take(3)) // sadece 3 tane
+        {
+            <div class="mb-4 text-center border-bottom">
+                <a href="/Description/BlogDetails/@item.DescriptionID">
+                    <img src="@item.DescriptionImage" alt="@item.DescriptionTitle"
+                         class="img-fluid rounded mb-2"
+                         style="max-height: 200px; object-fit: cover;" />
+                </a>
+                <h6>@item.DescriptionTitle</h6>
+            </div>
+        }
+    </div>
+</div>

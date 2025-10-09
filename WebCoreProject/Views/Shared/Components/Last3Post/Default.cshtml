@@ -1,0 +1,21 @@
+﻿@using EntityLayer.Concrete
+@model List<Description>
+
+
+
+<div class="card mb-4 bg-black text-light">
+    <div class="card-header text-warning">Son Bloglar</div>
+    <div class="card-body">
+        @foreach (var item in Model) 
+        {
+            <div class="mb-4 text-center border-bottom">
+                <a href="/Description/BlogDetails/@item.DescriptionID">
+                    <img src="@item.DescriptionImage" alt="@item.DescriptionTitle"
+                         class="img-fluid rounded mb-2"
+                         style="max-height: 200px; object-fit: cover;" />
+                </a>
+                <h6>@item.DescriptionTitle</h6>
+            </div>
+        }
+    </div>
+</div>

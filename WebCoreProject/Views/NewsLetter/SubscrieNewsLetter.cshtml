@@ -1,0 +1,37 @@
+﻿
+<div class="col-md-5 offset-md-1 mb-3">
+    <form id="newsletterForm">
+        <h5>Haber bültenimize abone olun</h5>
+        <p>Yeni ve heyecan verici haberlerden zamanında haberdar olun.</p>
+        <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+            <input name="Mail" type="email" class="form-control" placeholder="Email address" required />
+            <button class="btn btn-primary" type="submit">Gönder</button>
+        </div>
+    </form>
+
+    <div id="newsletterResult" class="mt-2"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#newsletterForm").submit(function (e) {
+        e.preventDefault(); // Sayfa yenilenmesini engelle
+
+        $.ajax({
+            type: "POST",
+            url: "/NewsLetter/SubscrieNewsLetter",
+            data: $(this).serialize(),
+            success: function () {
+                $("#newsletterResult").html(
+                    "<div class='alert alert-success'>Abonelik başarılı!</div>"
+                );
+                $("#newsletterForm")[0].reset(); // input temizlensin
+            },
+            error: function () {
+                $("#newsletterResult").html(
+                    "<div class='alert alert-danger'>Bir hata oluştu!</div>"
+                );
+            }
+        });
+    });
+</script>

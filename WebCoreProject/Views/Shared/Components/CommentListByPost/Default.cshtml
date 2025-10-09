@@ -1,0 +1,28 @@
+﻿@using EntityLayer.Concrete
+@model IEnumerable<Comment>
+
+
+
+@if (Model.Count() != 0)
+
+{
+
+         @foreach (var item in Model)
+         {
+
+     <div class="d-flex mb-3">
+         <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+         <div class="ms-3">
+             <div class="fw-bold">@item.CommentUserName</div>
+             @item.CommentContent
+         </div>
+     </div>
+
+         } 
+
+}
+
+else 
+{ 
+    <h3>Daha önce yorum yapılmamış.</h3>
+}

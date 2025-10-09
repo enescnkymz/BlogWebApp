@@ -1,0 +1,45 @@
+﻿@using EntityLayer.Concrete
+@model List<About>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+
+
+
+<!-- About section two-->
+@foreach (var item in Model)
+{
+    <section class="py-5">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6 order-first order-lg-last"><img class="img-fluid rounded mb-5 mb-lg-0" src="@item.AboutImage1" alt="..." /></div>
+                <div class="col-lg-6">
+                    <h2 class="fw-bolder text-secondary">@item.AboutDetails1</h2>
+                    <p class="lead fw-normal text-muted mb-0">@item.AboutDetails2</p>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<!-- Team members section-->
+<section class="py-5 bg-secondary">
+    <div class="container px-5 my-5">
+        <div class="text-center">
+            <h2 class="fw-bolder">Takımımız</h2>
+            <p class="lead fw-normal text-light mb-5">Sizin için çalışıyoruz</p>
+        </div>
+        <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+            <div class="col mb-5 mb-5 mb-xl-0">
+                <div class="text-center">
+                    <img class="img-fluid rounded-circle mb-4 px-4" src="~/images/wolf.jpg" alt="..." />
+                    <h5 class="fw-bolder">Enes Cankıymaz</h5>
+                    <div class="fst-italic text-light">Founder &amp; CEO</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

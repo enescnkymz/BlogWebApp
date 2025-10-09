@@ -1,0 +1,27 @@
+﻿<header class="p-3 bg-black text-light">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+           
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/Description/Index" class="nav-link px-2 text-secondary">Ana Sayfa</a></li>
+                <li><a href="/Writer/Test" class="nav-link px-2 text-white">Yazar</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                <li><a href="/Contact/Index" class="nav-link px-2 text-white">İletişim</a></li>
+                <li><a href="/About/Index" class="nav-link px-2 text-white">Hakkımızda</a></li>
+            </ul>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="ara"
+                       class="form-control form-control-dark text-bg-dark"
+                       placeholder="Ara..."
+                       aria-label="Ara" />
+            </form>
+            <div class="text-end">
+                <a asp-controller="Login" asp-action="Index" class="btn btn-outline-light me-2">Giriş Yap</a>
+                <a asp-controller="Register" asp-action="Index" class="btn btn-warning">Kayıt Ol</a>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
