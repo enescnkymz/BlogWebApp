@@ -1,0 +1,162 @@
+﻿@using EntityLayer.Concrete
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Kategori Listesi</h5>
+                    <div class="ibox-tools">
+                        <a href="/Admin/Category/AddCategory" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i> Yeni Kategori Ekle
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Kategori Adı</th>
+                                    <th>Açıklama</th>
+                                    <th>Durum</th>
+
+                                    <th class="text-center">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var sira = (Model.PageNumber - 1) * Model.PageSize + 1;
+                                    foreach (var item in Model)
+                                    {
+
+                                        <tr>
+                                            <td>@sira</td>
+                                            <td>@item.CategoryName</td>
+                                            <td>@item.CategoryDescription</td>
+                                            <td>
+                                                @if (item.CategoryStatus)
+                                                {
+                                                    <span class="label label-primary">Aktif</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-default">Pasif</span>
+                                                }
+                                            </td>
+
+                                            <td class="text-center">
+                                                <a asp-controller="Category" asp-action="EditCategory" asp-route-id="@item.CategoryID" class="btn btn-info btn-xs" title="Düzenle">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                @if (item.CategoryStatus)
+                                                {
+                                                    <a href="javascript:void(0);" class="btn btn-warning btn-xs" title="Pasif Yap" onclick="durumOnayi(@item.CategoryID,1)">
+                                                        <i class="fa fa-toggle-on"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="javascript:void(0);" class="btn btn-success btn-xs" title="Aktif Yap" onclick="durumOnayi(@item.CategoryID,0)">
+                                                        <i class="fa fa-toggle-off"></i>
+                                                    </a>
+                                                }
+                                            <form asp-action="DeleteCategory" asp-route-id="@item.CategoryID" method="post" id="deleteForm_@item.CategoryID" style="display:inline;">
+
+                                                <button type="button" class="btn btn-danger btn-xs" onclick="silmeOnayi(@item.CategoryID)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+
+                                            </form>
+                                            </td>
+                                        </tr>
+                                        sira++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center">Henüz kategori bulunmamaktadır.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+@section Scripts {     
+<script>
+
+    function silmeOnayi(id) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: "Bu kategoriyi silmek istediğinize emin misiniz? Bu işlem geri alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, Sil!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // EVET denirse, ilgili ID'ye sahip formu bul ve POST et (Gönder)
+                document.getElementById('deleteForm_' + id).submit();
+            }
+        })
+    }
+
+    function durumOnayi(id, yapilacakIslem) {
+
+        // Mesajı duruma göre belirleyelim
+        var mesajText = "";
+        var butonText = "";
+        var butonRenk = "";
+
+        if (yapilacakIslem) { // Pasif yapılacaksa
+            mesajText = "Bu kategoriyi PASİF duruma getirmek istediğinize emin misiniz?";
+            butonText = "Evet, Pasif Yap";
+            butonRenk = "#f8bb86"; // Turuncu tonu
+        } else { // Aktif yapılacaksa
+            mesajText = "Bu kategoriyi AKTİF duruma getirmek istediğinize emin misiniz?";
+            butonText = "Evet, Aktif Yap";
+            butonRenk = "#28a745"; // Yeşil tonu
+        }
+
+        Swal.fire({
+            title: 'Durum Değiştirilecek',
+            text: mesajText,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: butonRenk,
+            cancelButtonColor: '#d33',
+            confirmButtonText: butonText,
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 404 HATASINI ÇÖZEN KISIM:
+                // "/.../" + id yerine "?id=" + id kullandık. Bu en güvenli yoldur.
+                window.location.href = "/Admin/Category/ChangeCategoryStatus/" + id;
+            }
+        })
+    }
+
+
+</script>
+
+    }

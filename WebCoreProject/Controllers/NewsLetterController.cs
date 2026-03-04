@@ -9,11 +9,7 @@ namespace WebCoreProject.Controllers
 	public class NewsLetterController : Controller
 	{
 		NewsLetterManager nm = new NewsLetterManager(new EfNewsLetterRepository());
-		[HttpGet]
-		public IActionResult SubscribeNewsLetter()
-		{
-			return PartialView();
-		}
+
 		[HttpPost]
 		public IActionResult SubscrieNewsLetter(NewsLetter n)
 		{

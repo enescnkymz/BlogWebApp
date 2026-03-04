@@ -1,0 +1,190 @@
+﻿@using EntityLayer.Concrete
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<Description>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<a href="/Admin/Blog/ExportExcelBlogList" class="btn btn-primary">Excel Olarak İndir</a>
+<br />
+<br />
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Yazı Yönetimi</h2>
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Tüm Yazılar (En Eski → En Yeni)</h5>
+                    <div class="ibox-tools">
+                        <span class="label label-primary">Toplam: @Model.TotalItemCount Yazı</span>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <!-- Arama Formu -->
+
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <div class="row">
+                            @foreach (var post in Model)
+                            {
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="contact-box" style="margin-bottom: 20px;">
+                                        <div class="text-center">
+                                            <img alt="image" class="rounded m-t-xs img-fluid"
+                                                 src="@post.DescriptionImage"
+                                                 style="width: 80px; height: 80px; object-fit: cover;">
+
+                                            <h3 class="m-b-xs">
+                                                <strong>@post.DescriptionTitle  #@post.DescriptionID</strong>
+                                            </h3>
+
+                                            <div class="font-bold">
+                                                @if (post.DescriptionStatus == 1)
+                                                {
+                                                    <span class="label label-primary">Aktif</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-danger">Pasif</span>
+                                                }
+                                            </div>
+
+                                            <address class="m-t-md">
+                                                <i class="fa fa-calendar"></i> @post.DescriptionCreateDate.ToString("dd.MM.yyyy HH:mm") 
+                                            </address>
+                                        </div>
+
+                                        <div class="contact-box-footer">
+                                            <div class="m-t-xs btn-group">
+                                                <a href="#" class="btn btn-xs btn-white"
+                                                   title="@post.WriterID"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top">
+                                                    <i class="fa fa-info-circle">  </i> Yazar ID
+                                                </a>
+
+
+                                                <a href="/Description/BlogDetails/@post.DescriptionID" class="btn btn-xs btn-white" title="Git">
+                                                    <i class="fa fa-link"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="contact-box-footer">
+                                            <div class="m-t-xs">
+                                                
+
+                                                <button class="btn btn-xs btn-danger btn-block delete-post"
+                                                        data-id="@post.DescriptionID"
+                                                        data-name="@post.DescriptionTitle">
+                                                    <i class="fa fa-trash"></i> Yazıyı Sil
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.CurrentSearch }), new PagedListRenderOptions
+                                    {
+                                        LiElementClasses = new string[] { "page-item" },
+                                        PageClasses = new string[] { "page-link" },
+                                        UlElementClasses = new string[] { "pagination" },
+                                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                        LinkToFirstPageFormat = "İlk",
+                                        LinkToPreviousPageFormat = "Önceki",
+                                        LinkToNextPageFormat = "Sonraki",
+                                        LinkToLastPageFormat = "Son"
+                                    })
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning text-center">
+                            <i class="fa fa-exclamation-triangle"></i> Yazı bulunmamaktadır.
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+           
+            $('.delete-post').on('click', function () {
+                var postId = $(this).data('id');
+                var postName = $(this).data('name');
+
+                Swal.fire({
+                    title: 'Silmek istediğinize emin misiniz?',
+                    text: postName + " adlı yazıyı silmek üzeresiniz. Bu işlem geri alınamaz!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/Blog/DeletePost',
+                            type: 'POST',
+                            data: { id: postId },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Silindi!',
+                                        text: response.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire('Hata!', response.message, 'error');
+                                }
+                            },
+                            error: function () {
+                                Swal.fire('Hata!', 'Silme işlemi başarısız oldu!', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+}

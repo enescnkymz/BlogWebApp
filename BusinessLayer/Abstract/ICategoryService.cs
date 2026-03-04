@@ -1,4 +1,5 @@
-﻿using EntityLayer.Concrete;
+﻿using BusinessLayer.DTOs;
+using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Abstract
 {
-    public interface ICategoryService
+    public interface ICategoryService : IGenericService<Category>
     {
-        void AddCategory(Category category); 
-        void DeleteCategory(Category category); 
-        void UpdateCategory(Category category);
-        List<Category> GetAllCategories();
-        Category GetById(int id);
+		List<CategoryChartDto> GetCategoryChart();
 
-    }
+	}
 }

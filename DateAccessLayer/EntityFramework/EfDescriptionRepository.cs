@@ -18,7 +18,7 @@ namespace DateAccessLayer.EntityFramework
 		{
 			using (var c = new Context())
 			{
-                 return c.Descriptions.Include(x => x.Category).ToList();
+                 return c.Descriptions.Include(x => x.Category).OrderByDescending(x => x.DescriptionCreateDate).ToList();
 			}
 		}
 
@@ -26,10 +26,75 @@ namespace DateAccessLayer.EntityFramework
 		{
 			using (var c = new Context()) 
 			{ 
-				return c.Descriptions.Include(x => x.Category).Include(x => x.Writer).FirstOrDefault(x => x.DescriptionID == id); 
+				return c.Descriptions
+					.Include(x => x.Category)
+					.Include(x => x.Writer)
+					.FirstOrDefault(x => x.DescriptionID == id); 
 			}
 		
 		}
-		
+		public List<Description> GetBlogListWithCategoryByWriter(int id)
+		{
+			using (var c = new Context())
+			{
+				return c.Descriptions
+					.Include(x => x.Category)  
+					.Where(x => x.WriterID == id)
+					.OrderByDescending(x=>x.DescriptionCreateDate)             
+					.ToList();
+			}
+		}
+		public int GetBlogCountByWriter(int WriterID)
+		{
+			using (var c = new Context())
+			{
+				return c.Descriptions.Count(x => x.WriterID == WriterID);
+			}
+		}
+
+		public List<Description> GetDescriptionsWithCommentCount()
+		{
+			using (var c = new Context())
+			{
+
+				DateTime lastWeek = DateTime.Now.AddDays(-7);
+
+				return c.Descriptions
+					.Include(x=>x.Comments)
+					.OrderByDescending(x=>x.Comments.Count())
+					.Where(x => x.DescriptionCreateDate >= lastWeek)
+					.Take(3)
+					.ToList();
+
+			}
+		}
+
+		public List<Description> WriterLast3Post(int id)
+		{
+			using (var c = new Context()) 
+			{
+				return c.Descriptions
+					.Where(x=>x.WriterID == id)
+					.OrderByDescending(x=>x.DescriptionCreateDate)
+					.Take(3)
+					.ToList();
+
+			}
+		}
+		public List<Description> GetDescriptionsByCategoryId(int id)
+		{
+			using (var c = new Context())
+			{
+				return c.Descriptions
+					.Where(x => x.CategoryID == id)
+					.ToList();
+
+			}
+		}
+
+
+
+
+
 	}
 }

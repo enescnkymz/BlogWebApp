@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.DTOs;
 using DateAccessLayer.Abstract;
 using DateAccessLayer.EntityFramework;
 using DateAccessLayer.Repositories;
@@ -19,30 +20,47 @@ namespace BusinessLayer.Concrete
         {
             _categoryDal = categoryDal;
         }
-
-        public void AddCategory(Category category)
-        {
-            _categoryDal.İnsert(category);
-        }
-
-        public void DeleteCategory(Category category)
-        {
-            _categoryDal.Delete(category);
-        }
-
-        public List<Category> GetAllCategories()
-        {
-           return _categoryDal.GetListAll();
-        }
-
+      
+        
+		public List<Category> GetAll()
+		{
+			return _categoryDal.GetListAll();
+		}
+		
         public Category GetById(int id)
         {
             return _categoryDal.GetById(id);
         }
 
-        public void UpdateCategory(Category category)
-        {
-            _categoryDal.Update(category);
-        }
+		public void TAdd(Category t)
+		{
+			_categoryDal.İnsert(t);
+		}
+
+		public void TDelete(Category t)
+		{
+			_categoryDal.Delete(t);
+		}
+
+		public void TUpdate(Category t)
+		{
+			_categoryDal.Update(t);
+		}
+
+		public List<CategoryChartDto> GetCategoryChart()
+		{
+			var data = _categoryDal.GetBlogCountsByCategory();
+
+			var values = data.Select(x => new CategoryChartDto
+			{
+				CategoryName = x.CategoryName,
+				BlogCount = x.BlogCount,
+
+			}).ToList();
+			
+			return values;
+			
+		} 
+		
     }
 }

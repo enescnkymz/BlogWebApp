@@ -12,6 +12,11 @@ namespace DateAccessLayer.Abstract
 
         List<Description> GetDescriptionsWithCategory();
         Description GetDescriptionWithCategory(int id);
+        List<Description> GetBlogListWithCategoryByWriter(int id);
+        int GetBlogCountByWriter(int WriterID);
+        List<Description> GetDescriptionsWithCommentCount();
+        List<Description> WriterLast3Post(int id);
+        List<Description> GetDescriptionsByCategoryId(int id);
 
-    }
+	}
 }

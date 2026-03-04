@@ -1,23 +1,40 @@
 ﻿<header class="p-3 bg-black text-light">
-    <div class="container">
+    <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-           
+
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/Description/Index" class="nav-link px-2 text-secondary">Ana Sayfa</a></li>
-                <li><a href="/Writer/Test" class="nav-link px-2 text-white">Yazar</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                <li><a href="/Dashboard" class="nav-link px-2 text-white">Yazar</a></li>
+                <li><a href="/Admin/Category/Index" class="nav-link px-2 text-white">Admin</a></li>
                 <li><a href="/Contact/Index" class="nav-link px-2 text-white">İletişim</a></li>
                 <li><a href="/About/Index" class="nav-link px-2 text-white">Hakkımızda</a></li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="ara"
-                       class="form-control form-control-dark text-bg-dark"
-                       placeholder="Ara..."
-                       aria-label="Ara" />
-            </form>
+
+           
+
             <div class="text-end">
-                <a asp-controller="Login" asp-action="Index" class="btn btn-outline-light me-2">Giriş Yap</a>
-                <a asp-controller="Register" asp-action="Index" class="btn btn-warning">Kayıt Ol</a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    
+                    <div class="dropdown text-end">
+                        <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="me-2">@User.Identity.Name</span>           
+                        </a>
+                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" asp-controller="Writer" asp-action="WriterProfilePage"  >Profilim</a></li>
+                            <li><a class="dropdown-item" asp-controller="Writer" asp-action="WriterProfileEdit" >Ayarlar</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a asp-controller="Login" asp-action="LogOut" class="dropdown-item" >Çıkış Yap</a></li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    
+                    <a asp-controller="Login" asp-action="Index" class="btn btn-outline-light me-2">Giriş Yap</a>
+                    <a asp-controller="Register" asp-action="Index" class="btn btn-warning">Kayıt Ol</a>
+                }
 
             </div>
         </div>

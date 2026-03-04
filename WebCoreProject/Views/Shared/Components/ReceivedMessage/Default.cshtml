@@ -1,0 +1,44 @@
+﻿@using CoreLayer.Helpers
+@using EntityLayer.Concrete
+@model List<Message>
+
+@foreach (var item in Model)
+{
+    <div class="list-group list-group-flush bg-transparent">
+        <div class="list-group-item list-group-item-action bg-dark text-light border border-secondary border-opacity-25 mb-2 shadow-sm rounded p-3">
+            <div class="d-flex w-100 align-items-start">
+                <div class="me-3">
+                    <a href="/Writer/WriterProfilePage/@item.SenderID">
+                        <img src="@item.Sender.WriterImage"
+                             alt="@item.Sender.WriterMail"
+                             class="rounded-circle border border-secondary"
+                             style="width: 50px; height: 50px; object-fit: cover; opacity: 0.9;">
+                    </a>
+                </div>
+
+                <div class="flex-grow-1">
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                        <div class="flex-column">
+                            <a class="text-decoration-none" href="/Writer/WriterProfilePage/@item.SenderID">
+                                <h6 class="mb-1 fw-bold text-info">@item.Sender.WriterMail</h6>
+                            </a>
+                            <p class="mb-1 text-white">@item.MessageDetails</p>
+                        </div>
+
+                        <div class="text-end d-flex align-items-center">
+                            <small class="text-white-50 me-3" style="font-size: 0.75rem;">
+                                <i class="fa fa-paper-plane-o me-1" style="font-size: 10px;"></i>@DateHelpers.TimeAgo(item.MessageDate)
+                            </small>
+
+                            <a href="/Message/DeleteMessage/@item.MessageID?folder=Received"
+                               class="btn btn-outline-danger btn-sm border-0 opacity-75"
+                               title="Mesajı Sil">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

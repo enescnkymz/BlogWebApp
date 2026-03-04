@@ -1,0 +1,31 @@
+﻿@using EntityLayer.Concrete
+@model List<CategoryRateViewModel>
+@{
+    var colors = new List<string> { "bg-success", "bg-info", "bg-warning", "bg-danger", "bg-primary" };
+    int index = 0;
+}
+@{
+    Layout = null;
+}
+
+<div class="card shadow mb-4 bg-gray-900 text-light">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary ">Kategoriler</h6>
+    </div>
+    <div class="card-body">
+        @foreach (var item in Model)
+        {
+            var color = colors[index % colors.Count];
+            index++;
+            <h4 class="small font-weight-bold">
+                @item.CategoryName <span class="float-right">@item.Oran.ToString("0")%</span>
+            </h4>
+            <div class="progress mb-4">
+                <div class="progress-bar @color" role="progressbar" style="width: @item.Oran.ToString("0")%"
+                     aria-valuenow="@item.Oran" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        }
+    </div>
+</div>
+
+

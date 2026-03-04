@@ -1,0 +1,129 @@
+﻿@using CoreLayer.Helpers
+@using EntityLayer.Concrete
+@model List<Notification>
+
+
+@{
+    ViewData["Title"] = "AllNotifications";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bildirimler</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">   
+    <link href="~/css/AllNotifications.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container py-5 text-white bg-dark">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">
+                        <i class="bi bi-bell-fill text-primary"></i> Bildirimler
+                        <span class="badge bg-primary rounded-pill ms-2">@Model.Count</span>
+                    </h2>
+                    
+                </div>
+
+                <!-- Notification List -->
+                <div class="card shadow-sm">
+                    <div class="list-group list-group-flush">
+
+                        @foreach (var item in Model)
+                        {
+
+                            string iconClass = "";
+                            string colorClass = "";
+                            string notiTitle = "";
+
+                            switch (item.NotificationType)
+                            {
+                                case NotificationTypeEnum.Message:
+                                    iconClass = "bi-chat-dots-fill";
+                                    colorClass = "primary"; // Mavi
+                                    notiTitle = "Mesaj";
+                                    break;
+                                case NotificationTypeEnum.Task:
+                                    iconClass = "bi-check-circle-fill";
+                                    colorClass = "success"; // Yeşil
+                                    notiTitle = "Görev";
+                                    break;
+                                case NotificationTypeEnum.Warning:
+                                    iconClass = "bi-exclamation-triangle-fill";
+                                    colorClass = "warning"; // Sarı
+                                    notiTitle = "Uyarı";
+                                    break;
+                                case NotificationTypeEnum.Offer:
+                                    iconClass = "bi-gift-fill";
+                                    colorClass = "info"; // Açık Mavi
+                                    notiTitle = "Teklif";
+                                    break;
+                                case NotificationTypeEnum.Like:
+                                    iconClass = "bi-heart-fill";
+                                    colorClass = "danger"; // Kırmızı
+                                    notiTitle = "Beğeni";
+                                    break;
+                                case NotificationTypeEnum.Upload:
+                                    iconClass = "bi-cloud-upload-fill";
+                                    colorClass = "secondary"; // Gri
+                                    notiTitle = "Yükleme";
+                                    break;
+                                default:
+                                    iconClass = "bi-bell-fill";
+                                    colorClass = "primary";
+                                    notiTitle = "Bildirim";
+                                    break;
+
+                            }
+
+
+
+
+
+                            <div class="list-group-item bg-dark notification-item">
+                                <div class="d-flex align-items-start">
+
+                                    <div class="notification-icon bg-@colorClass bg-opacity-10 text-@colorClass me-3">
+                                        <i class="bi @iconClass"></i>
+                                    </div>
+
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1 text-light">
+                                                    @notiTitle                                                    
+                                                </h6>
+                                                <p class="mb-1 text-light">@item.NotificationDetails</p>
+                                                <small class="notification-time text-info">
+                                                    <i class="bi bi-clock"></i> @DateHelpers.TimeAgo(item.NotificationDate)
+                                                </small>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+                
+            </div>
+                </div>
+
+               
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

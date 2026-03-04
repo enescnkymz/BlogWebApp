@@ -1,4 +1,5 @@
-﻿using EntityLayer.Concrete;
+﻿using DateAccessLayer.Models;
+using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace DateAccessLayer.Abstract
 {
     public interface ICategoryDal:IGenericDal<Category>
     {
+		List<CategoryBlogCountReadModel> GetBlogCountsByCategory();
 
-    }
+	}
 }

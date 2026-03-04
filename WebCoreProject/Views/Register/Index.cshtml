@@ -1,4 +1,4 @@
-﻿@model EntityLayer.Concrete.Writer
+﻿@model UserSignUpViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -6,8 +6,8 @@
 }
 
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.js"></script>
+
+
 
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="col-md-6 col-lg-5">
@@ -15,72 +15,91 @@
             <div class="card-body p-4">
                 <h3 class="text-center mb-4">Kayıt Ol</h3>
 
+                <div class="card-body">
+
+                    <form method="post">
+
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
 
-                @using (Html.BeginForm("index", "Register", FormMethod.Post))
-                {
-                    <div class="mb-3">
-                        <label class="form-label">Kullanıcı Adı</label>
-                         
-                        @Html.TextBoxFor(x => x.WriterName, new { @class= "form-control"} )
-                        @Html.ValidationMessageFor(x => x.WriterName,"", new {@class="text-danger"} )
+                        <div class="form-group mb-3">
+                            <label>Ad Soyad</label>
+                            <input type="text" asp-for="NameSurname" class="form-control" />
+                            <span asp-validation-for="NameSurname" class="text-danger"></span>
+                        </div>
 
-                        @*<input type="text" name="WriterName" class="form-control" placeholder="Kullanıcı adınız" required />*@
+                        <div class="form-group mb-3">
+                            <label>Kullanıcı Adı</label>
+                            <input type="text" asp-for="Username" class="form-control" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Mail Adresi</label>
+                            <input type="email" asp-for="Mail" class="form-control" />
+                            <span asp-validation-for="Mail" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Şifre</label>
+                            <input type="password" asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Şifre Tekrar</label>
+                            <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="termsCheckbox" required>
+                            <label class="form-check-label" for="termsCheckbox">
+                                <a href="javascript:void(0);" onclick="showTerms()" style="text-decoration:underline; cursor:pointer;">
+                                    Kullanıcı Sözleşmesini
+                                </a>
+                                okudum ve kabul ediyorum.
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                        </div>
+                    </form>
+                    <div class="mt-3 text-center">
+                        <p>Zaten hesabın var mı? <a href="/Login/Index">Giriş Yap</a></p>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">E-Posta</label>
-
-                        @Html.TextBoxFor(x => x.WriterMail , new {@class="form-control"} )
-                        @Html.ValidationMessageFor(x => x.WriterMail, "", new { @class = "text-danger" })
-
-                        @*<input type="email" name="WriterMail" class="form-control" placeholder="E-Posta adresiniz" required />*@
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Şifre</label>
-
-                        @Html.TextBoxFor(x => x.WriterPassword , new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.WriterPassword, "", new { @class = "text-danger" })
-
-                        @*<input type="password" name="WriterPassword" class="form-control" placeholder="Şifreniz" required />*@
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Kullanıcı Fotoğrafı</label>
-
-                        @Html.TextBoxFor(x => x.WriterImage , new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.WriterImage, "", new { @class = "text-danger" })
-
-                        @*<input type="text" name="WriterImage" class="form-control" placeholder="Dosya yolu" required />*@
-                    </div>
-
-                    <div class="mb-3">
-                        <input type="checkbox" id="terms" class="form-check-input" />
-                        <span><a href="" id="showTerms">Şartları</a> okudum ve kabul ediyorum</span>
-                    </div>
-
-                    <script>
-                        $('#showTerms').click(function (e) {
-                            e.preventDefault();
-                            swal("Şartlarımız","Kullanıcılar paylaştıkları yorum ve içeriklerden kendileri sorumludur. hukuka aykırı içerikler kaldırılabilir.Telif hakkı size ait olmayan metin, görsel veya medyayı paylaşmayın; alıntılarda kaynak belirtin.Kişisel veriler gizlilik politikası kapsamında işlenir; spam ve reklam amaçlı içeriklere izin verilmez.");
-                        });
-                    </script>
-
-
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Kayıt Ol</button>
-                    </div>
-                }
-
-
-
-
-
-                <p class="text-center mt-3 mb-0">
-                    Zaten hesabın var mı? <a href="/Login/Index">Giriş Yap</a>
-                </p>
+                </div>
+              
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showTerms() {
+        Swal.fire({
+            title: 'Kullanıcı Sözleşmesi',
+            html: `
+                <div style="text-align: left; max-height: 300px; overflow-y: auto;">
+                    <h5>1. Taraflar</h5>
+                    <p>İşbu sözleşme ... (Şirket Adı) ile kullanıcı arasında düzenlenmiştir.</p>
+
+                    <h5>2. Kullanım Koşulları</h5>
+                    <p>Sitemize üye olan herkes kuralları kabul etmiş sayılır. İçeriklerin izinsiz kopyalanması yasaktır.</p>
+
+                    <h5>3. Gizlilik</h5>
+                    <p>Kullanıcı verileri 3. şahıslarla paylaşılmayacaktır.</p>
+
+                    <p><em></em></p>
+                </div>
+            `,
+            icon: 'info',
+            confirmButtonText: 'Okudum, Anladım',
+            width: '600px'
+        });
+    }
+</script>
+

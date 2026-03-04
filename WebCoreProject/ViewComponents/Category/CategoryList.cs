@@ -9,7 +9,7 @@ namespace WebCoreProject.ViewComponents.Category
 		CategoryManager cm = new CategoryManager(new EfCategoryRepository());
 		public IViewComponentResult Invoke()
 		{
-			var values = cm.GetAllCategories();
+			var values = cm.GetAll();
 			return View(values);
 		}
 

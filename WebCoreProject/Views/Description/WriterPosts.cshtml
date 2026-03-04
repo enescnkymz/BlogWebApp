@@ -1,0 +1,71 @@
+﻿@using EntityLayer.Concrete
+@model X.PagedList.IPagedList<Description>
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewData["Title"] = "WriterPosts";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <div class="card shadow-lg mb-4 bg-dark text-white border-0">
+        <div class="card-header py-3 bg-gray-900 border-bottom border-secondary">
+            <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-blog mr-2"></i>Bloglarım</h6>
+        </div>
+        <div class="card-body bg-dark">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover table-borderless" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="text-secondary text-uppercase small">
+                        <tr>
+                            <th>Başlık</th>
+                            <th>Kategori</th>
+                            <th>Oluşturma Tarihi</th>
+                            <th><i class="fas fa-eye"></i> Okunma</th>
+                            <th>Düzenle</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-light">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><a class="text-decoration-none text-info font-weight-bold" href="/Description/BlogDetails/@item.DescriptionID">@item.DescriptionTitle</a></td>
+                                <td><a href="/Description/Index?categoryId=@item.CategoryID"><span class="badge badge-secondary py-2 px-3">@item.Category.CategoryName</span></a></td>
+                                <td class="text-white">@item.DescriptionCreateDate.ToString("dd MMMM yyyy")</td>
+                                <td><span class="text-success font-weight-bold">@item.DescriptionViewCount</span></td>
+
+                                <td>
+                                    <a href="/Description/EditBlog/@item.DescriptionID" class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/Description/DeleteBlog/@item.DescriptionID" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <hr class="border-secondary" />
+                <a href="/Description/AddBlog" class="btn btn-success btn-icon-split shadow-sm">
+                    <span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+                    <span class="text">Yeni Blog Oluştur</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="pb-3">
+            @Html.PagedListPager(Model, page => Url.Action("WriterPosts", new { page }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link bg-dark border-secondary text-info" }, 
+                UlElementClasses = new string[] { "pagination", "justify-content-center", "my-4" }
+            })
+        </div>
+    </div>
+</div>

@@ -1,12 +1,12 @@
 ﻿@using EntityLayer.Concrete
-@model IEnumerable<Description>
+@model List<Description>
 
 
 
-<div class="card mb-4 bg-black">
-    <div class="card-header text-warning">Son Bloglar</div>
+<div class="card mb-4 bg-black"> 
+    <div class="card-header text-gray-900 text-bg-secondary">Yazarın Diğer Yazıları</div>
     <div class="card-body">
-        @foreach (var item in Model.Take(3)) // sadece 3 tane
+        @foreach (var item in Model) 
         {
             <div class="mb-4 text-center border-bottom">
                 <a href="/Description/BlogDetails/@item.DescriptionID">

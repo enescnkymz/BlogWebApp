@@ -10,7 +10,7 @@ namespace WebCoreProject.ViewComponents.Description
 
         public IViewComponentResult Invoke()
         {
-            var values = dm.GetLast3Post();
+            var values = dm.GetDescriptionsWithCommentCount();
             return View(values);
         }
 

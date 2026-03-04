@@ -1,22 +1,20 @@
-﻿using EntityLayer.Concrete;
+﻿using BusinessLayer.DTOs;
+using DateAccessLayer.Models;
+using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace BusinessLayer.Abstract
 {
-	public interface IWriterService
+	public interface IWriterService : IGenericService<Writer>
 	{
-
-		void AddWriter(Writer writer);
-		void DeleteWriter(Writer writer);
-		void UpdateWriter(Writer writer);
-		List<Writer> GetAllWriters();
-		Category GetWriterById(int id);
-
-
+		UserNavbarDto GetUserNavbarInfoById(int id);
+		Task<IPagedList<AdminWriterListDto>> GetWritersWithStatistics(int pageNumber, int pageSize, string search);
+		int FindUserIdByMail(string mail);
 
 	}
 }

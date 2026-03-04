@@ -1,0 +1,114 @@
+﻿@using EntityLayer.Concrete
+@model Writer
+
+
+@{
+    ViewData["Title"] = "WriterProfileEdit";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yazar Bilgilerini Güncelle</title>
+
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0 bg-dark text-light rounded-4 overflow-hidden">
+                    <div class="card-header bg-primary bg-gradient text-white py-3 border-0">
+                        <h4 class="mb-0 text-center fw-bold">
+                            <i class="bi bi-person-gear me-2"></i>Yazar Bilgilerini Güncelle
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form class="form-group" method="post" enctype="multipart/form-data">
+
+                            @Html.HiddenFor(x => x.WriterID)
+
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label for="NameSurname" class="form-label text-white small">Ad Soyad</label>
+                                    @Html.TextBoxFor(x => x.NameSurname, new { @class = "form-control bg-dark text-white border-secondary shadow-none", id = "NameSurname", placeholder = "Adınızı giriniz" })
+                                    <small class="text-danger">@Html.ValidationMessageFor(x => x.NameSurname)</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="WriterName" class="form-label text-white small">Kullanıcı Adı</label>
+                                    @Html.TextBoxFor(x => x.WriterName, new { @class = "form-control bg-dark text-white border-secondary shadow-none", id = "WriterName", placeholder = "Kullanıcı adınızı giriniz" })
+                                    <small class="text-danger">@Html.ValidationMessageFor(x => x.WriterName)</small>
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label for="WriterAbout" class="form-label text-white small">Hakkında</label>
+                                    @Html.TextAreaFor(x => x.WriterAbout, 4, 0, new { @class = "form-control bg-dark text-white border-secondary shadow-none", id = "WriterAbout", placeholder = "Kendinizden bahsedin..." })
+                                    <small class="text-danger">@Html.ValidationMessageFor(x => x.WriterAbout)</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="WriterImage" class="form-label text-white small">Profil Resmi</label>
+                                    <input type="file" name="WriterImage" id="WriterImage" class="form-control bg-dark text-white border-secondary shadow-none" accept="image/*">
+                                    <small class="text-white-50 small">Değiştirmek istemiyorsanız boş bırakın</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="WriterMail" class="form-label text-white small">E-posta</label>
+                                    @Html.TextBoxFor(x => x.WriterMail, null, new { @class = "form-control bg-dark text-white border-secondary shadow-none", id = "WriterMail", type = "email", placeholder = "ornek@mail.com" })
+                                    <small class="text-danger">@Html.ValidationMessageFor(x => x.WriterMail)</small>
+                                </div>
+
+                                <hr class="border-secondary opacity-25 my-4">
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="WriterPassword" class="form-label text-white small">Yeni Şifre</label>
+                                    @Html.PasswordFor(x => x.WriterPassword, new { @class = "form-control bg-dark text-white border-secondary shadow-none", id = "WriterPassword", placeholder = "••••••" })
+                                    <small class="text-danger">@Html.ValidationMessageFor(x => x.WriterPassword)</small>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="ConfirmPassword" class="form-label text-white small">Şifre Tekrar</label>
+                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control bg-dark text-white border-secondary shadow-none" placeholder="••••••">
+                                    <span id="passwordMismatch" class="text-danger small" style="display:none;">Şifreler uyuşmuyor!</span>
+                                    <small class="text-danger">@Html.ValidationMessage("ConfirmPassword")</small>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold">
+                                    <i class="bi bi-cloud-arrow-up me-2"></i>Bilgileri Güncelle
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="alert bg-black border-secondary border-opacity-25 mt-3 text-center">
+                    <small class="text-white italic">
+                        <i class="bi bi-shield-lock me-1"></i> Şifrenizi güncellemeyecekseniz şifre alanlarını boş bırakabilirsiniz.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("ConfirmPassword").addEventListener("input", function () {
+            const pwd = document.getElementById("WriterPassword").value;
+            const confirm = this.value;
+            const warn = document.getElementById("passwordMismatch");
+
+            if (pwd !== confirm) {
+                warn.style.display = "block";
+            }
+            else {
+                warn.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+</html>
+

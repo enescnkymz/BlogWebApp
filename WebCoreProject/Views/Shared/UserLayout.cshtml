@@ -10,11 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Ana Sayfa</title>
+    <title>GameOn Haber</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="~/startbootstrap-blog-home-gh-pages/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="~/startbootstrap-blog-home-gh-pages/css/styles.css" rel="stylesheet" />
+    <link href="~/css/ErrorStyles.css" rel="stylesheet" />
     <!-- İcons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
@@ -22,7 +22,7 @@
     <!-- Responsive navbar-->
     @await Html.PartialAsync("Header")
     <!-- Page header with logo and tagline-->
-    @await Html.PartialAsync("Navbar")
+    @*@await Html.PartialAsync("Navbar")*@
     <div class="mb-5"></div>
     <!-- Page content-->
     @RenderBody()
@@ -31,7 +31,10 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="~/startbootstrap-blog-home-gh-pages/js/scripts.js"></script>
+    <script src="~/js/HomeScripts.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>

@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.DTOs;
+using DateAccessLayer.EntityFramework;
+using X.PagedList;
+using DateAccessLayer.Models;
 
 namespace BusinessLayer.Concrete
 {
@@ -15,30 +19,52 @@ namespace BusinessLayer.Concrete
 		public WriterManager(IWriterDal writerDal) 
 		{ 
 			_writerDal = writerDal;
-		}
-		public void AddWriter(Writer writer)
+		}	
+
+		public List<Writer> GetAll()
 		{
-			_writerDal.İnsert(writer);
+			return _writerDal.GetListAll();
 		}
 
-		public void DeleteWriter(Writer writer)
+		public Writer GetById(int id)
 		{
-			throw new NotImplementedException();
+			return _writerDal.GetById(id);
 		}
 
-		public List<Writer> GetAllWriters()
+		public UserNavbarDto GetUserNavbarInfoById(int id)
 		{
-			throw new NotImplementedException();
+			var user = _writerDal.GetById(id);
+
+			return new UserNavbarDto
+			{
+				UserName = user.WriterName,
+				UserImage = user.WriterImage
+			};
 		}
 
-		public Category GetWriterById(int id)
+		public void TAdd(Writer t)
 		{
-			throw new NotImplementedException();
+			_writerDal.İnsert(t);
 		}
 
-		public void UpdateWriter(Writer writer)
+		public void TDelete(Writer t)
 		{
-			throw new NotImplementedException();
+			_writerDal.Delete(t);
+		}
+
+		public void TUpdate(Writer t)
+		{
+			_writerDal.Update(t);
+		}
+
+		public async Task<IPagedList<AdminWriterListDto>> GetWritersWithStatistics(int pageNumber, int pageSize, string search)
+		{
+			return await _writerDal.GetWritersWithStatisticsAsync(pageNumber, pageSize, search);
+		}
+
+		public int FindUserIdByMail(string mail)
+		{
+			 return _writerDal.FindUserIdByMail(mail);
 		}
 	}
 }

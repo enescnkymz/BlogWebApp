@@ -18,9 +18,9 @@
                         <!-- Post title-->
                         <h1 class="fw-bolder mb-1">@Model.DescriptionTitle</h1>
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">Posted on @(((DateTime)Model.DescriptionCreateDate).ToString("dd-MMMM-yyyy")) by @Model.Writer.WriterName </div>
+                        <div class="text-muted fst-italic mb-2">@Model.DescriptionCreateDate.ToString("dd-MMMM-yyyy") tarihinde <a href="/Writer/WriterProfilePage/@Model.Writer.WriterID" >@Model.Writer.NameSurname</a> tarafından yazıldı. </div>
                         <!-- Post categories-->
-                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">@Model.Category.CategoryName</a>
+                        <a class="badge bg-secondary text-decoration-none link-light" href="/Description/Index?categoryId=@Model.CategoryID">@Model.Category.CategoryName</a>
                     </header>
                     <!-- Preview image figure-->
                     <figure class="mb-4">
@@ -37,12 +37,12 @@
             
             <!-- Comments section-->
             <section class="mb-5">
-                <div class="card bg-dark text-light">
+                <div class="card bg-black text-light">
                     <div class="card-body">
-                        <!-- Comment form-->                       
-                        @await Html.PartialAsync("~/Views/Comment/AddComment.cshtml", new { id = ViewBag._id }) 
-                        <!-- Comment with nested comments-->                     
-                        @await Component.InvokeAsync("CommentListByPost",new {id = ViewBag._id })
+                        <!-- Comment form-->
+                        @await Html.PartialAsync("~/Views/Comment/AddComment.cshtml", new Comment { DescriptionID = Model.DescriptionID })
+                        <!-- Comment with nested comments-->
+                        @await Component.InvokeAsync("CommentListByPost", new { id = Model.DescriptionID })
 
                     </div>
                 </div>
@@ -51,15 +51,7 @@
                 <!-- Side widgets-->
                 <div class="col-lg-4">
                     <!-- Search widget-->
-                    <div class="card mb-4 bg-black">
-                        <div class="card-header text-warning">Bul</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Aranacak kelimeyi girin..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-warning" id="button-search" type="button">Git!</button>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <!-- Categories widget-->
                     @await Component.InvokeAsync("CategoryList") 
                     <!-- Side widget-->

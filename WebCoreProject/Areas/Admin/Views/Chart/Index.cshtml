@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="container mt-4">
+    <h3 >Kategorilerdeki Yazı Sayısı</h3>
+    <div id="piechart_div" style="width: 100%; height: 500px; "></div>
+</div>
+
+
+
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    // Google Charts Yükleniyor
+    google.charts.load('current', { 'packages': ['corechart'] });      //hangi paketlerin indirileceğini söylüyoruz
+    google.charts.setOnLoadCallback(LoadData);                         //paketler indikten sonra çalışacak fonksiyon
+
+    // 1. Veriyi Controller'dan Çeken Fonksiyon
+    function LoadData() {
+        $.ajax({
+            url: '/Admin/Chart/GetChartData', 
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                DrawPieChart(data);
+            },
+            error: function () {
+                alert('Veri yüklenirken hata oluştu!');
+            }
+        });
+    }
+
+    // 2. Grafiği Çizen Fonksiyon
+    function DrawPieChart(chartData) {
+        var data = new google.visualization.DataTable();
+
+        // Sütunları tanımlıyoruz (Tip ve Başlık)
+        data.addColumn('string', 'Kategori');
+        data.addColumn('number', 'Oran');
+
+        // Gelen JSON verisini Google Charts formatına çeviriyoruz
+        for (var i = 0; i < chartData.length; i++) {
+            // chartData[i] -> O sıradaki veriyi (örneğin C# satırını) tutar
+            data.addRow([chartData[i].kategori, chartData[i].oran]);
+        }
+
+       
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_div'));
+        chart.draw(data);
+    }
+</script>
+

@@ -1,0 +1,93 @@
+﻿@using EntityLayer.Concrete
+@model Description
+@{
+    ViewData["Title"] = "EditBlog";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<link href="~/css/Contact.css" rel="stylesheet" />
+<div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
+    <div class="text-center mb-5">
+        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="fa fa-pen-square"></i></div>
+        <h1 class="fw-bolder">Blog Düzenleme</h1>
+        <p class="lead fw-normal text-muted mb-0">Blog içeriğinizi düzenleyin</p>
+    </div>
+    <div class="row gx-5 justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <form asp-action="EditBlog" asp-controller="Description" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="DescriptionID" />
+
+                <!-- Başlık -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">
+                        <i class="fa fa-heading me-2 text-primary"></i>
+                        Başlık
+                    </label>
+                    <input asp-for="DescriptionTitle" class="form-control form-control-lg border-2" id="title" placeholder="Blog başlığınızı girin" />
+                    <span asp-validation-for="DescriptionTitle" class="text-danger ms-2 mt-1 d-block"></span>
+                </div>
+
+                <!-- Kategori -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">
+                        <i class="fa fa-folder me-2 text-primary"></i>
+                        Kategori
+                    </label>
+                    <select asp-for="CategoryID" asp-items="@ViewBag.CtgryMenu" class="form-select border-2" id="category">
+                        <option value="">Kategori Seçin</option>
+                    </select>
+                    <span asp-validation-for="CategoryID" class="text-danger ms-2 mt-1 d-block"></span>
+                </div>
+
+                <!-- Mevcut Resim Önizleme (varsa) -->
+                @if (!string.IsNullOrEmpty(Model.DescriptionImage))
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Mevcut Resim</label>
+                        <div class="border rounded p-2">
+                            <img src="@Model.DescriptionImage" alt="Mevcut resim" class="img-fluid rounded" style="max-height: 200px;" />
+                        </div>
+                    </div>
+                }
+
+                <!-- Resim Yükleme -->
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label">
+                        <i class="fa fa-image me-2 text-primary"></i>
+                        Resim Değiştir @(string.IsNullOrEmpty(Model.DescriptionImage) ? "" : "(Opsiyonel)")
+                    </label>
+                    <input type="file" class="form-control border-2" id="imageFile" name="newImage" accept="image/*">
+                    <small class="form-text text-muted">
+                        Maksimum 5MB, JPG/PNG formatında.
+                        @(string.IsNullOrEmpty(Model.DescriptionImage) ? "" : "Boş bırakırsanız mevcut resim korunur.")
+                    </small>
+                </div>
+
+                <!-- Gizli alan - Mevcut resim yolunu tut -->
+                <input type="hidden" asp-for="DescriptionImage" />
+
+                <!-- Yazı İçeriği -->
+                <div class="mb-3">
+                    <label for="content" class="form-label">
+                        <i class="fa fa-align-left me-2 text-primary"></i>
+                        Yazı İçeriği
+                    </label>
+                    <textarea asp-for="DescriptionContent" class="form-control border-2" id="content" placeholder="Blog içeriğinizi yazın" style="height: 250px; resize: vertical;"></textarea>
+                    <span asp-validation-for="DescriptionContent" class="text-danger ms-2 mt-1 d-block"></span>
+                    <small class="form-text text-muted">
+                        <i class="fa fa-info-circle me-1"></i>
+                        Blog içeriğinizi detaylı bir şekilde yazın. Minimum 100 karakter önerilir.
+                    </small>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button class="btn btn-success btn-lg shadow-sm" id="submitButton" type="submit">
+                        <i class="fa fa-check-circle me-2"></i>
+                        Güncelle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

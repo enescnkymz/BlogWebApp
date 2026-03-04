@@ -2,6 +2,7 @@
 using DateAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace WebCoreProject.Controllers
 {
@@ -10,17 +11,24 @@ namespace WebCoreProject.Controllers
 		CommentManager cm = new CommentManager(new EfCommentRepository());
 
 		[HttpGet]
-		public PartialViewResult AddComment()
+		public PartialViewResult AddComment(int id)
 		{
+			ViewBag.Id = id;
 			return PartialView();
 
 		}
+
 		[HttpPost]
 		public IActionResult AddComment(Comment c)
 		{
+
+			var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+			c.CommentSenderID = currentUserId;
+			c.BlogRate = 0;
 			c.CommentStatus = true;
-			c.CommentDate = DateTime.Today;			
-			cm.AddComment(c);
+			c.CommentDate = DateTime.Now;
+			cm.TAdd(c);
 			return Ok();
 
 		}

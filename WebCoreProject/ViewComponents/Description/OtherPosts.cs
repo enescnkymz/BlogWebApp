@@ -9,7 +9,7 @@ namespace WebCoreProject.ViewComponents.Description
 		DescriptionManager dm = new DescriptionManager(new EfDescriptionRepository());
 		public IViewComponentResult Invoke(int id)
 		{
-			var values = dm.GetDescriptionsWithWriter(id);
+			var values = dm.WriterLast3Post(id);
 		    return View(values);
 		}
 	}

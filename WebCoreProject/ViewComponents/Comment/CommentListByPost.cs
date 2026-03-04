@@ -9,7 +9,7 @@ namespace WebCoreProject.ViewComponents.Comment
 		CommentManager cm = new CommentManager(new EfCommentRepository());
 		public IViewComponentResult Invoke(int id)
 		{
-			var Values = cm.GetAllComments(id);
+			var Values = cm.GetCommentsWithWriterByBlogId(id);
 			return View(Values);
 		}
 	

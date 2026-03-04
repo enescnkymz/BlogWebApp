@@ -1,70 +1,177 @@
-﻿@using EntityLayer.Concrete
-@model List<Description>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<EntityLayer.Concrete.Description>
+@using CoreLayer.Helpers
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
 
+<header class="py-4 bg-dark text-white border-bottom border-secondary border-opacity-25 mb-4 shadow-sm">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-lg mb-4 mb-lg-0 text-center text-lg-start">
+                    <h2 class="fw-bolder mb-1">Hoşgeldiniz, <span class="text-info opacity-75">@User.Identity.Name</span></h2>
+                    <p class="text-white-50 mb-0 small">Güncel Haberler ve Yazılar</p>
+                </div>
+            }
+
+            <div class="col-lg-auto">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end gap-3">
+                    @await Component.InvokeAsync("ExchangeRate")
+                    @await Component.InvokeAsync("WeatherDashboard")
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>
 
 <div class="container bg-dark">
     <div class="row">
+
+        <div class="col-lg-8">
+            @if (ViewBag.CategoryName != null || ViewBag.WriterName != null || ViewBag.Search != null)
+            {
+                <div class="alert alert-secondary d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <strong>Sonuçlar:</strong>
+                        @if (ViewBag.CategoryName != null)
+                        {<span class="badge bg-primary">Kategori: @ViewBag.CategoryName</span>}
+                        @if (ViewBag.WriterName != null)
+                        {<span class="badge bg-info">Yazar: @ViewBag.WriterName</span>}
+                        @if (ViewBag.Search != null)
+                        {<span class="badge bg-warning text-dark">Kelime: "@ViewBag.Search"</span>}
+                    </div>
+                    <a href="/Description/Index" class="btn btn-sm btn-outline-danger">Filtreleri Temizle</a>
+                </div>
+            }
+
+        </div>
+
+
         <!-- Blog entries-->
         <div class="col-lg-8">
             <!-- Featured blog post-->
-
             <!-- Nested row for non-featured blog posts-->
             <div class="row">
-                
+                @if (Model.Count == 0)
+                {
+                    <div class="col-12">
+                        <div class="card bg-dark border-secondary border-opacity-25 shadow-sm rounded-4 text-center py-5 my-3">
+                            <div class="card-body">
+                                <i class="bi bi-search text-white-50 mb-3" style="font-size: 3.5rem;"></i>
+
+                                <h3 class="text-light fw-bold">Sonuç Bulunamadı</h3>
+
+                                <p class="text-white-50 mb-4 px-md-5">
+                                    Aradığınız kritere uygun herhangi bir yazıya ulaşamadık.
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 @foreach (var item in Model)
                 {
 
-                 <div class="col-lg-6">
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="/Description/BlogDetails/@item.DescriptionID"><img class="card-img-top" src="@item.DescriptionThumbnailImage" alt="..." /></a>
-                        <span class="badge bg-success position-absolute top-0 end-0 m-2">@item.Category.CategoryName</span>
-                        <div class="card-body">
-                            <div class="small text-muted">@(((DateTime)item.DescriptionCreateDate).ToString("dd-MM-yyyy"))</div>
-                            <h2 class="card-title h4">@item.DescriptionTitle</h2>
-                            <p class="card-text">@item.DescriptionContent.Substring(0,(item.DescriptionContent.Substring(0,135)).LastIndexOf(" ")) ...</p>
-                            <a class="btn btn-primary" href="/Description/BlogDetails/@item.DescriptionID">Devamını gör →</a>
+                    <div class="col-lg-6">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <a href="/Description/BlogDetails/@item.DescriptionID"><img class="card-img-top" src="@item.DescriptionImage" alt="..." /></a>
+                            <span class="badge bg-success position-absolute top-0 end-0 m-2">@item.Category.CategoryName</span>
+                            <div class="card-body">
+                                <div class="small text-muted">@DateHelpers.TimeAgo(item.DescriptionCreateDate)</div>
+                                <h2 class="card-title h4">@item.DescriptionTitle</h2>
+                                <p class="card-text">
+                                    @if (item.DescriptionContent != null && item.DescriptionContent.Length > 135)
+                                    {
+                                        @item.DescriptionContent.Substring(0, (item.DescriptionContent.Substring(0, 135)).LastIndexOf(" ")) <span>...</span>
+                                    }
+                                    else
+                                    {
+                                        @item.DescriptionContent
+                                    }
+                                </p>
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <a class="btn btn-secondary" href="/Description/BlogDetails/@item.DescriptionID">Devamını gör →</a>
+
+                                    <small class="text-muted">
+                                        <i class="bi bi-eye"></i> @item.DescriptionViewCount
+                                    </small>
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                 </div>
                 }
             </div>
             <!-- Pagination-->
+
             <nav aria-label="Pagination">
                 <hr class="my-0" />
-                <ul class="pagination justify-content-center my-4">
-                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">En Yeni</a></li>
-                    <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">En Eski</a></li>
-                </ul>
+                @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new
+ {
+     page,
+     categoryId = Context.Request.Query["categoryId"],
+     search = Context.Request.Query["search"],
+     writerId = Context.Request.Query["writerId"]
+ }),
+ new PagedListRenderOptions
+ {
+     LiElementClasses = new string[] { "page-item" },
+
+          // SIFIR CSS: Bootstrap'in kendi karanlık tema sınıflarını buraya ekledik
+     PageClasses = new string[] { "page-link", "bg-dark", "text-light", "border-secondary" },
+
+          UlElementClasses = new string[] { "pagination", "justify-content-center", "my-4" },
+
+          LinkToFirstPageFormat = "« En Yeni",
+     LinkToLastPageFormat = "En Eski »",
+     LinkToPreviousPageFormat = "‹ Önceki",
+     LinkToNextPageFormat = "Sonraki ›",
+
+          DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+     DisplayLinkToLastPage = PagedListDisplayMode.Always,
+     DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+     DisplayLinkToNextPage = PagedListDisplayMode.Always,
+
+          MaximumPageNumbersToDisplay = 5
+ })
+
             </nav>
+
+
         </div>
         <!-- Side widgets-->
         <div class="col-lg-4">
             <!-- Search widget-->
             <div class="card mb-4 bg-black text-light">
-                <div class="card-header text-warning">Bul</div>
+                <div class="card-header text-gray-900 text-bg-secondary ">Bul</div>
                 <div class="card-body">
-                    <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Aranacak kelimeyi girin..." aria-label="Enter search term..." aria-describedby="button-search" />
-                        <button class="btn btn-warning" id="button-search" type="button">Git!</button>
-                    </div>
+                    <form asp-action="Index" method="get">
+                        <div class="input-group">
+                            <input type="hidden" name="categoryId" value="@Context.Request.Query["categoryId"]" />
+                            <input type="hidden" name="writerId" value="@Context.Request.Query["writerId"]" />
+                            <input class="form-control bg-dark text-white border-secondary" type="text" name="search" placeholder="Aranacak kelimeyi girin..." value="@Context.Request.Query["search"]" />
+                            <button class="btn btn-outline-success" id="button-search" type="submit">Ara</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- Categories widget-->
-           @await Component.InvokeAsync("CategoryList")
-            
+            @await Component.InvokeAsync("CategoryList")
+
             <!-- Side widget-->
-           @await Component.InvokeAsync("Last3Post") 
+            @await Component.InvokeAsync("Last3Post")
         </div>
     </div>
 </div>

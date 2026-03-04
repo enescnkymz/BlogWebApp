@@ -5,15 +5,18 @@
 
 
 <div class="card mb-4 bg-black text-warning">
-    <div class="card-header">Kategoriler</div>
+    <div class="card-header text-gray-900 text-bg-secondary">Kategoriler</div>
     <div class="card-body">
         <div class="row">
             @foreach (var item in Model)
             {
 
                 <div class="col-sm-6">
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="#!" class="text-light">@item.CategoryName</a></li>
+                    <ul class="list-unstyled mb-0">                      
+                        <li> 
+                            <a asp-action="Index" asp-controller="Description" asp-route-categoryId="@item.CategoryID" asp-route-search="@Context.Request.Query["search"]" asp-route-writerId="@Context.Request.Query["writerId"]"  class="text-decoration-none text-info"> @item.CategoryName </a>
+
+                        </li>
                     </ul>
                 </div>
             

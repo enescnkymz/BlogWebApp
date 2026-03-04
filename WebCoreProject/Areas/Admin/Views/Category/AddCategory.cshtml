@@ -1,0 +1,58 @@
+﻿@using EntityLayer.Concrete
+@model Category
+@{
+    ViewData["Title"] = "AddCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Yeni Kategori Ekle</h5>
+                </div>
+                <div class="ibox-content">
+                    <form asp-action="AddCategory" method="post">
+                        <div class="form-group">
+                            <label asp-for="CategoryName">Kategori Adı <span class="text-danger">*</span></label>
+                            <input asp-for="CategoryName" class="form-control" placeholder="Kategori adını giriniz" required />
+                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CategoryDescription">Açıklama</label>
+                            <textarea asp-for="CategoryDescription" class="form-control" rows="4" placeholder="Kategori açıklamasını giriniz"></textarea>
+                            <span asp-validation-for="CategoryDescription" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Durum</label>
+                            <div>
+                                <label class="radio-inline">
+                                    <input asp-for="CategoryStatus" type="radio" value="true" checked /> Aktif
+                                </label>
+                                <label class="radio-inline">
+                                    <input asp-for="CategoryStatus" type="radio" value="false" /> Pasif
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save"></i> Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-white">
+                                <i class="fa fa-arrow-left"></i> Geri Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

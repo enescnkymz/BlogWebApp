@@ -1,0 +1,48 @@
+﻿@using EntityLayer.Concrete
+@model List<Contact>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+
+        @foreach (var item in Model)
+        {
+        <div class="col-lg-3">
+            <div class="contact-box center-version">
+
+                <a>
+
+                    <img alt="image" class="rounded-circle" src="~/images/default.png">
+
+
+                    <h3 class="m-b-xs"><strong>@item.ContactUserName</strong></h3>
+
+                    <div class="font-bold">@item.ContactMail</div>
+                    <address class="m-t-md">
+                        <strong>@item.ContactPhoneNumber</strong><br>
+                        @item.ContactDate.ToString("dd.MM.yyyy HH:mm")
+                        <br>
+                        @item.ContactMessage
+                    </address>
+
+                </a>
+                <div class="contact-box-footer">
+                    <div class="m-t-xs btn-group">
+
+                        <a asp-controller="Contact" asp-action="DeleteContact" asp-area="Admin" asp-route-id="@item.ContactID" class="btn btn-xs btn-white"><i class="fa fa-remove"></i>Sil</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+
+
+    </div>
+</div>
+

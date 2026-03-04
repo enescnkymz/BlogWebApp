@@ -1,0 +1,122 @@
+﻿@model EntityLayer.Concrete.Description
+@{
+    ViewData["Title"] = "AddBlog";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/AddBlog.css" rel="stylesheet" />
+
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-dark text-light">
+
+                <div class="card-header bg-black text-center py-5 border-0" style="background-color: #111111;">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-25 rounded-circle mb-3" style="width: 80px; height: 80px;">
+                        <i class="fa fa-pen-square fs-1 text-primary"></i>
+                    </div>
+                    <h1 class="fw-bold mb-2 text-white">Yeni Blog Oluştur</h1>
+                    <p class="lead mb-0 text-white-50">İçeriğinizi paylaşın ve okuyucularınıza ulaşın</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-dark">
+                    <form asp-action="AddBlog" asp-controller="Description" method="post" enctype="multipart/form-data">
+                        <div class="row g-4">
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input asp-for="DescriptionTitle" class="form-control bg-dark text-white border-secondary" id="title" placeholder="Başlık" />
+                                    <label for="title" class="text-white">
+                                        <i class="fa fa-heading me-2 text-primary"></i>Başlık
+                                    </label>
+                                </div>
+                                <span asp-validation-for="DescriptionTitle" class="text-danger small ms-2 mt-1 d-block"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label text-white small">
+                                        <i class="fa fa-folder me-2 text-primary"></i>Kategori
+                                    </label>
+                                    <select asp-for="CategoryID" asp-items="@ViewBag.CtgryMenu" class="form-select bg-dark text-white border-secondary" id="category" required="Kategori Boş Olamaz!">
+                                        <option value="" class="bg-dark">Kategori Seçin</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryID" class="text-danger small ms-2 mt-1 d-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="imageFile" class="form-label text-white small">
+                                        <i class="fa fa-image me-2 text-primary"></i>Resim Yükle
+                                    </label>
+                                    <input type="file" class="form-control bg-dark text-white border-secondary" id="imageFile" name="imageFile" accept="image/*">
+                                    <small >Resminizin yatay olmasına dikkat ediniz!</small>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea asp-for="DescriptionContent" class="form-control bg-dark text-white border-secondary" id="content" placeholder="İçerik" style="height: 300px; resize: vertical;"></textarea>
+                                    <label for="content" class="text-white">
+                                        <i class="fa fa-align-left me-2 text-primary"></i>Yazı İçeriği
+                                    </label>
+                                </div>
+                                <span asp-validation-for="DescriptionContent" class="text-danger small ms-2 mt-1 d-block"></span>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-primary btn-lg px-5 shadow" type="submit">
+                                        <i class="fa fa-paper-plane me-2"></i>Paylaş
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer bg-black border-top border-secondary border-opacity-25 text-center py-3">
+                    <small class="text-white ">
+                        <i class="fa fa-lock me-1"></i>
+                        Verileriniz güvenli bir şekilde kaydedilecektir.
+                    </small>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-dark shadow-sm border-bottom border-primary border-3">
+                        <div class="card-body text-center">
+                            <i class="fa fa-pencil-alt text-primary fs-3 mb-3"></i>
+                            <h6 class="fw-bold text-white">Özgün İçerik</h6>
+                            <p class="small text-white-50 mb-0">Kendinize ait cümleler kurun.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-dark shadow-sm border-bottom border-success border-3">
+                        <div class="card-body text-center">
+                            <i class="fa fa-check-circle text-success fs-3 mb-3"></i>
+                            <h6 class="fw-bold text-white">Kalite</h6>
+                            <p class="small text-white-50 mb-0">Yüksek çözünürlüklü görseller kullanın.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-dark shadow-sm border-bottom border-warning border-3">
+                        <div class="card-body text-center">
+                            <i class="fa fa-star text-warning fs-3 mb-3"></i>
+                            <h6 class="fw-bold text-white">SEO</h6>
+                            <p class="small text-white-50 mb-0">Başlığınız dikkat çekici olsun.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

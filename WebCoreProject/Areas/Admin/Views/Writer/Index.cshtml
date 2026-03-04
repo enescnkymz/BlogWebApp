@@ -1,0 +1,270 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<DateAccessLayer.Models.AdminWriterListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Yazar Yönetimi</h2>
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Tüm Yazarlar (En çok yazı yazandan → En az)</h5>
+                    <div class="ibox-tools">
+                        <span class="label label-primary">Toplam: @Model.TotalItemCount Yazar</span>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <!-- Arama Formu -->
+                    <div class="row m-b-lg">
+                        <div class="col-lg-12">
+                            <form asp-action="Index" method="get" class="form-inline">
+                                <div class="form-group">
+                                    <label class="sr-only" for="search">Ara</label>
+                                    <div class="input-group" style="width: 400px;">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="search"
+                                               name="search"
+                                               value="@ViewBag.CurrentSearch"
+                                               placeholder="Yazar adı veya ID ile ara...">
+                                        <span class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-search"></i> Ara
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch))
+                                {
+                                    <a href="@Url.Action("Index")" class="btn btn-white m-l-sm">
+                                        <i class="fa fa-times"></i> Filtreyi Temizle
+                                    </a>
+                                    <span class="text-muted m-l-sm">
+                                        "@ViewBag.CurrentSearch" için <strong>@Model.TotalItemCount</strong> sonuç bulundu
+                                    </span>
+                                }
+                            </form>
+                        </div>
+                    </div>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <div class="row">
+                            @foreach (var writer in Model)
+                            {
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="contact-box" style="margin-bottom: 20px;">
+                                        <div class="text-center">
+                                            <a href="/Writer/WriterProfilePage/@writer.WriterId">
+                                                <img alt="image" class="rounded-circle m-t-xs img-fluid"
+                                                     src="@writer.ImageUrl"
+                                                     style="width: 80px; height: 80px; object-fit: cover;">
+                                            </a>
+
+                                            <h3 class="m-b-xs">
+                                                <strong>@writer.Name #@writer.WriterId</strong>
+                                            </h3>
+
+                                            <div class="font-bold">
+                                                @if (writer.Status)
+                                                {
+                                                    <span class="label label-primary">Aktif</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-danger">Pasif</span>
+                                                }
+                                            </div>
+
+                                            <address class="m-t-md">
+                                                <i class="fa fa-envelope"></i> @writer.Email
+                                            </address>
+                                        </div>
+
+                                        <div class="contact-box-footer">
+                                            <div class="m-t-xs btn-group">
+                                                <a href="#" class="btn btn-xs btn-white"
+                                                   title="@writer.About"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top">
+                                                    <i class="fa fa-info-circle"></i> Hakkında
+                                                </a>
+
+                                                <a class="btn btn-xs btn-white" title="@writer.BlogCount Blog Yazısı">
+                                                    <i class="fa fa-file-text"></i> @writer.BlogCount
+                                                </a>
+
+                                                <a class="btn btn-xs btn-white" title="@writer.CommentCount Yorum">
+                                                    <i class="fa fa-comment"></i> @writer.CommentCount
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="contact-box-footer">
+                                            <div class="m-t-xs">
+                                                <button class="btn btn-xs btn-primary btn-block change-status"
+                                                        data-id="@writer.WriterId"
+                                                        data-status="@writer.Status">
+                                                    <i class="fa fa-exchange"></i> Durumu Değiştir
+                                                </button>
+
+                                                <button class="btn btn-xs btn-danger btn-block delete-writer"
+                                                        data-id="@writer.WriterId"
+                                                        data-name="@writer.Name">
+                                                    <i class="fa fa-trash"></i> Yazarı Sil
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Sayfalama -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, search = ViewBag.CurrentSearch }), new PagedListRenderOptions
+                                    {
+                                        LiElementClasses = new string[] { "page-item" },
+                                        PageClasses = new string[] { "page-link" },
+                                        UlElementClasses = new string[] { "pagination" },
+                                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                        LinkToFirstPageFormat = "İlk",
+                                        LinkToPreviousPageFormat = "Önceki",
+                                        LinkToNextPageFormat = "Sonraki",
+                                        LinkToLastPageFormat = "Son"
+                                    })
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning text-center">
+                            <i class="fa fa-exclamation-triangle"></i> Henüz kayıtlı yazar bulunmamaktadır.
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Durum Değiştirme
+            $('.change-status').on('click', function () {
+                var writerId = $(this).data('id');
+                var currentStatus = $(this).data('status');
+                var statusText = currentStatus === 'True' ? 'pasif' : 'aktif';
+                var btn = $(this);
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Yazar durumunu " + statusText + " yapmak istediğinize emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1ab394',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, değiştir!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/Writer/ChangeStatus',
+                            type: 'POST',
+                            data: { id: writerId },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Başarılı!',
+                                        text: response.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire('Hata!', response.message, 'error');
+                                }
+                            },
+                            error: function () {
+                                Swal.fire('Hata!', 'Bir hata oluştu!', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Yazar Silme
+            $('.delete-writer').on('click', function () {
+                var writerId = $(this).data('id');
+                var writerName = $(this).data('name');
+
+                Swal.fire({
+                    title: 'Silmek istediğinize emin misiniz?',
+                    text: writerName + " adlı yazarı silmek üzeresiniz. Bu işlem geri alınamaz!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/Admin/Writer/DeleteWriter',
+                            type: 'POST',
+                            data: { id: writerId },
+                            success: function (response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Silindi!',
+                                        text: response.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire('Hata!', response.message, 'error');
+                                }
+                            },
+                            error: function () {
+                                Swal.fire('Hata!', 'Silme işlemi başarısız oldu!', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+}
